@@ -8,36 +8,12 @@ from eventos import settings
 
 # Create your models here.
 
-PROFILES = (
-    ('Estudiante', 'Estudiante'),
-    ('Profesor', 'Profesor'),
-    ('Administrador', 'Administrador'),
-)
 
 RESULTS = (
     ('Mención', 'Mención'),
     ('Destacado', 'Destacado'),
     ('Relevante', 'Relevante'),
 )
-
-
-class User(AbstractUser):
-    perfil = models.CharField(max_length=15, choices=PROFILES)
-    photo = models.ImageField(upload_to='photo_profile/', null=True, blank=True)
-    slug = models.SlugField(unique=True, null=True)
-
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.username)
-        super(User, self).save(*args, **kwargs)
-
-    def delete(self, *args, **kwargs):
-        if os.path.isfile(self.photo.path):
-            os.remove(self.photo.path)
-
-        super(User, self).delete(*args, **kwargs)
-
-    def __str__(self):
-        return self.first_name
 
 
 class Evento(models.Model):
@@ -56,20 +32,6 @@ class Evento(models.Model):
 
     def __str__(self):
         return self.nombre
-
-
-class Programa(models.Model):
-    nombre_programa = models.CharField(max_length=50)
-    fecha = models.DateTimeField(null=False, blank=False, auto_now_add=True)
-    evento = models.ForeignKey(Evento, on_delete=models.CASCADE, name='evento')
-    slug = models.SlugField(unique=True, null=True)
-
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.nombre_programa)
-        super(Programa, self).save(*args, **kwargs)
-
-    def __str__(self):
-        return self.nombre_programa
 
 
 class Comite(models.Model):
@@ -108,7 +70,7 @@ class Trabajo(models.Model):
 
 
 class Resultado(models.Model):
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE, name='usuario')
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, name='usuario')
     resultado_obtenido = models.CharField(max_length=20, choices=RESULTS)
     evento = models.ForeignKey(Evento, on_delete=models.CASCADE, name='evento')
     fecha = models.DateTimeField(null=False, blank=False, auto_now_add=True)
