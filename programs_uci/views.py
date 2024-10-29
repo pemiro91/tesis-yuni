@@ -1,3 +1,5 @@
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import Http404
 from django.shortcuts import render
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
@@ -49,6 +51,10 @@ class ProgramsList(APIView):
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def getProgramDetail(request, slug_name):
-    program = Programa.objects.get(slug=slug_name)
-    serializer = ProgramaSerializer(program, many=False)
-    return Response(serializer.data)
+    try:
+        program = Programa.objects.get(slug=slug_name)
+        serializer = ProgramaSerializer(program, many=False)
+        return Response(serializer.data)
+    except ObjectDoesNotExist:
+        raise Http404
+

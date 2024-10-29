@@ -1,5 +1,4 @@
 from django.http import Http404
-from django.shortcuts import render
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.permissions import IsAuthenticated
@@ -37,7 +36,7 @@ class UserApi(APIView):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response({serializer.data}, status=HTTP_201_CREATED)
+            return Response(serializer.data, status=HTTP_201_CREATED)
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
     @staticmethod

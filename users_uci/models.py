@@ -4,6 +4,8 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.text import slugify
 
+from eventos.validators import validate_image_extension
+
 # Create your models here.
 
 PROFILES = (
@@ -15,7 +17,7 @@ PROFILES = (
 
 class User(AbstractUser):
     perfil = models.CharField(max_length=15, choices=PROFILES)
-    photo = models.ImageField(upload_to='photo_profile/', null=True, blank=True)
+    photo = models.ImageField(upload_to='photo_profile/', null=True, blank=True, validators=[validate_image_extension])
     slug = models.SlugField(unique=True, null=True)
 
     def save(self, *args, **kwargs):

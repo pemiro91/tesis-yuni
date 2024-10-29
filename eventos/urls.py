@@ -26,6 +26,11 @@ urlpatterns = [
                   path('admin/', admin.site.urls),
                   path("users/", include("users_uci.urls")),
                   path("programs/", include("programs_uci.urls")),
+                  path("comites/", include("comite_uci.urls")),
+                  path("trabajos/", include("trabajo_uci.urls")),
+                  path("resultados/", include("resultado_uci.urls")),
+                  path("evidencia/", include("evidencia_uci.urls")),
+                  path("equipos/", include("equipo_uci.urls")),
 
                   path('api/events', EventoList.as_view(), name="myapp"),
                   path('api/event/register', EventoList.as_view(), name='register_event'),
