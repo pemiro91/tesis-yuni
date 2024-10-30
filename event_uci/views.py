@@ -23,7 +23,7 @@ class EventoList(APIView):
     def get(request):
         events = Evento.objects.all()
         serializer = EventoSerializer(events, many=True)
-        return Response(serializer.data, status=HTTP_200_OK)
+        return Response({'eventos': serializer.data}, status=HTTP_200_OK)
 
     @staticmethod
     def post(request, format=None):
