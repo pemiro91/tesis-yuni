@@ -3,6 +3,7 @@ from django.utils.timezone import now
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
 from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.status import (
     HTTP_400_BAD_REQUEST,
@@ -111,7 +112,7 @@ def getUsersForEvent(request, slug_name):
 
 
 @api_view(['GET'])
-@permission_classes([IsLoggedInAll])
+@permission_classes([AllowAny])
 def getEventsForNext(request):
     try:
         event = Evento.objects.filter(fecha_inicio__gte=now())
@@ -122,7 +123,7 @@ def getEventsForNext(request):
 
 
 @api_view(['GET'])
-@permission_classes([IsLoggedInAll])
+@permission_classes([AllowAny])
 def getEventsForMonth(request):
     try:
         year_now = now().year
