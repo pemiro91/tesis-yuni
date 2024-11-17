@@ -2,7 +2,7 @@ from django.urls import path
 from django.urls.conf import include
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 
-from users_uci.views import UserApi, getProfile
+from users_uci.views import UserApi, getProfile, getSearchUser
 
 urlpatterns = [
 
@@ -16,5 +16,6 @@ urlpatterns = [
     path('api/profile', getProfile, name='profile'),
     path('api/update/<slug:slug_username>', UserApi.as_view(), name='profile_update'),
     path('api/delete/<slug:slug_username>', UserApi.as_view(), name='delete_user'),
+    path('api/search/<slug:username>', getSearchUser, name='search_user'),
 
 ]

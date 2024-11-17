@@ -19,7 +19,8 @@ from django.contrib import admin
 from django.urls import path
 from django.urls.conf import include
 
-from event_uci.views import EventoList, getEventDetail
+from event_uci.views import EventoList, getEventDetail, getEventForName, ParticiparEventoList, getUsersForEvent, \
+    getEventsForNext, getEventsForMonth
 from eventos import settings
 
 urlpatterns = [
@@ -37,5 +38,11 @@ urlpatterns = [
                   path('api/event/<slug:slug_name>', getEventDetail, name='detail_event'),
                   path('api/event/update/<slug:slug_name>', EventoList.as_view(), name='update_event'),
                   path('api/event/delete/<slug:slug_name>', EventoList.as_view(), name='delete_event'),
+                  path('api/event/search/<slug:name>', getEventForName, name='search_event'),
+                  path('api/events/next', getEventsForNext, name='events_next'),
+                  path('api/events/month', getEventsForMonth, name='events_month'),
+
+                  path('participar/api/register', ParticiparEventoList.as_view(), name='participar_event'),
+                  path('participar/api/list/<slug:slug_name>', getUsersForEvent, name='participar_event_list'),
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

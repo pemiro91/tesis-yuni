@@ -14,10 +14,26 @@ PROFILES = (
     ('Administrador', 'Administrador'),
 )
 
+CATEGORIES = (
+    ('Doctor', 'Doctor'),
+    ('Master', 'Master'),
+    ('Ingeniero', 'Ingeniero'),
+)
+
+YEAR_STUDENT = (
+    ('1er', '1er'),
+    ('2do', '2do'),
+    ('3ero', '3ro'),
+    ('4to', '4to'),
+    ('5to', '5to'),
+)
+
 
 class User(AbstractUser):
     perfil = models.CharField(max_length=15, choices=PROFILES)
     photo = models.ImageField(upload_to='photo_profile/', null=True, blank=True, validators=[validate_image_extension])
+    category = models.CharField(max_length=15, choices=CATEGORIES)
+    year_student = models.CharField(max_length=15, choices=YEAR_STUDENT)
     slug = models.SlugField(unique=True, null=True)
 
     def save(self, *args, **kwargs):

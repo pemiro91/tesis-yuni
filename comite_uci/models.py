@@ -14,7 +14,7 @@ class Comite(models.Model):
     slug = models.SlugField(unique=True, null=True)
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.coordinador)
+        self.slug = slugify(self.evento.slug)
         super(Comite, self).save(*args, **kwargs)
 
     def __str__(self):

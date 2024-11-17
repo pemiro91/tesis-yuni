@@ -18,10 +18,8 @@ class Trabajo(models.Model):
     slug = models.SlugField(unique=True, null=True)
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.usuario)
+        self.slug = slugify(self.usuario.username)
         super(Trabajo, self).save(*args, **kwargs)
-        if os.path.isfile(self.documento.path):
-            os.remove(self.documento.path)
 
     def delete(self, *args, **kwargs):
         if os.path.isfile(self.documento.path):

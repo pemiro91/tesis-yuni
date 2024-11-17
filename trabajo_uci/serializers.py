@@ -8,7 +8,7 @@ from users_uci.models import User
 
 class TrabajoSerializer(serializers.ModelSerializer):
     usuario = serializers.PrimaryKeyRelatedField(
-        queryset=User.objects.all()
+        queryset=User.objects.all(),
     )
     evento = serializers.PrimaryKeyRelatedField(queryset=Evento.objects.all())
 
@@ -16,4 +16,4 @@ class TrabajoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Trabajo
-        fields = ['usuario', 'documento', 'evento', 'fecha', 'slug']
+        fields = ['id', 'usuario', 'documento', 'evento', 'fecha', 'slug']

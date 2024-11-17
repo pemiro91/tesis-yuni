@@ -4,6 +4,7 @@ from django.utils.text import slugify
 from event_uci.models import Evento
 from eventos import settings
 from eventos.validators import validate_result
+from trabajo_uci.models import Trabajo
 
 # Create your models here.
 
@@ -15,15 +16,15 @@ RESULTS = (
 
 
 class Resultado(models.Model):
-    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, name='usuario')
+    trabajo = models.ForeignKey(Trabajo, on_delete=models.CASCADE, name='trabajo')
     resultado_obtenido = models.CharField(max_length=20, choices=RESULTS, validators=[validate_result])
     evento = models.ForeignKey(Evento, on_delete=models.CASCADE, name='evento')
     fecha = models.DateTimeField(null=False, blank=False, auto_now_add=True)
     slug = models.SlugField(unique=True, null=True)
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.usuario.username)
+        self.slug = slugify(self.trabajo.slug)
         super(Resultado, self).save(*args, **kwargs)
 
     def __str__(self):
-        return self.usuario.username
+        return self.resultado_obtenido

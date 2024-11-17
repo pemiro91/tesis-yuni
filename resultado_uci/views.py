@@ -6,13 +6,16 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_200_OK, HTTP_201_CREATED, HTTP_403_FORBIDDEN
 from rest_framework.views import APIView
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from resultado_uci.models import Resultado
 from resultado_uci.serializers import ResultadoSerializer
+from users_uci.custom_permission import IsLoggedInAdminProfessor
 
 
 class ResultadoList(APIView):
-    permission_classes = (AllowAny,)
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsLoggedInAdminProfessor]
 
     @staticmethod
     def get(request):
@@ -22,17 +25,14 @@ class ResultadoList(APIView):
 
     @staticmethod
     def post(request):
-        serializer = ResultadoSerializer(data=request.data)
-        if serializer.is_valid():
-            result = Resultado.objects.filter(usuario_id=request.data['usuario'], evento=request.data['evento'])
-            if result.exists():
-                return Response({'message': 'El usuario ya tiene un resultado asignado'},
-                                status=HTTP_403_FORBIDDEN)
-            else:
+        if Resultado.objects.filter(evento=request.data['evento'], trabajo=request.data['trabajo']).exists():
+            return Response({'message': 'El trabajo ya tiene un resultado asignado'}, status=HTTP_400_BAD_REQUEST)
+        else:
+            serializer = ResultadoSerializer(data=request.data)
+            if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=HTTP_201_CREATED)
-
-        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
     @staticmethod
     def put(request, slug_name):
@@ -57,11 +57,11 @@ class ResultadoList(APIView):
 
 
 @api_view(['GET'])
-@permission_classes([AllowAny])
-def getResultadoDetail(request, slug_name):
+@permission_classes([IsLoggedInAdminProfessor])
+def getListResultadoForEvent(request, slug_event):
     try:
-        result = Resultado.objects.get(slug=slug_name)
-        serializer = ResultadoSerializer(result, many=False)
-        return Response(serializer.data)
+        result = Resultado.objects.filter(evento__slug=slug_event)
+        serializer = ResultadoSerializer(result, many=True)
+        return Response({'resultados': serializer.data})
     except ObjectDoesNotExist:
         raise Http404
