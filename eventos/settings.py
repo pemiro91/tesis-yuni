@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-cjtyrmws@zsd=d%3as2!z7&-a0pmfdec=!kmf)9c$h_-rs@%qc
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['yunier.pythonanywhere.com', 'localhost', '0.0.0.0', '127.0.0.1']
+ALLOWED_HOSTS = ['evento.pythonanywhere.com', 'localhost', '0.0.0.0', '127.0.0.1']
 
 # Application definition
 
