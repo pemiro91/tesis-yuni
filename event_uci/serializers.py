@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from event_uci.models import Evento, ParticiparEvento
+from users_uci.serializers import UserSerializer
 
 
 # TODO:Event Serializer
@@ -15,4 +16,9 @@ class ParticiparEventoSerializer(serializers.ModelSerializer):
     class Meta:
         model = ParticiparEvento
         fields = ['id', 'usuario', 'evento', 'fecha', 'slug']
-        depth = 1
+
+    def to_representation(self, instance):
+        self.fields['usuario'] = UserSerializer(read_only=True)
+        self.fields['evento'] = EventoSerializer(read_only=True)
+        return super(ParticiparEventoSerializer, self).to_representation(instance)
+
