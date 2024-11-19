@@ -23,7 +23,7 @@ CATEGORIES = (
 YEAR_STUDENT = (
     ('1er', '1er'),
     ('2do', '2do'),
-    ('3ero', '3ro'),
+    ('3ro', '3ro'),
     ('4to', '4to'),
     ('5to', '5to'),
 )

@@ -86,7 +86,7 @@ def getProfile(request):
 @permission_classes([AllowAny])
 def getSearchUser(request, username):
     try:
-        user = User.objects.get(username=username)
+        user = User.objects.get(username=username, perfil__exact="Estudiante")
         serializer = UserSerializer(user, many=False)
         return Response(serializer.data)
     except ObjectDoesNotExist:
