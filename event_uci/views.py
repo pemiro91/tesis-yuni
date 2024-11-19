@@ -67,11 +67,11 @@ def getEventDetail(request, slug_name):
 
 
 @api_view(['GET'])
-@permission_classes([IsLoggedInAll])
+@permission_classes([AllowAny])
 def getEventForName(request, name):
     try:
-        event = Evento.objects.get(nombre__contains=name)
-        serializer = EventoSerializer(event, many=False)
+        events = Evento.objects.filter(nombre__contains=name)
+        serializer = EventoSerializer(events, many=True)
         return Response(serializer.data)
     except ObjectDoesNotExist:
         raise Http404
