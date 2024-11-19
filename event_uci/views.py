@@ -56,7 +56,7 @@ class EventoList(APIView):
 
 
 @api_view(['GET'])
-@permission_classes([IsLoggedInAll])
+@permission_classes([AllowAny])
 def getEventDetail(request, slug_name):
     try:
         event = Evento.objects.get(slug=slug_name)
