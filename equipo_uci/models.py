@@ -11,7 +11,7 @@ from eventos import settings
 class Equipo(models.Model):
     evento = models.ForeignKey(Evento, on_delete=models.CASCADE, name='evento')
     participantes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='participantes', blank=True)
-    slug = models.SlugField(unique=True, null=True)
+    slug = models.SlugField(unique=False, null=True)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.evento.nombre)
