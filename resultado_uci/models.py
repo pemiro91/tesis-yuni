@@ -20,7 +20,7 @@ class Resultado(models.Model):
     resultado_obtenido = models.CharField(max_length=20, choices=RESULTS, validators=[validate_result])
     evento = models.ForeignKey(Evento, on_delete=models.CASCADE, name='evento')
     fecha = models.DateTimeField(null=False, blank=False, auto_now_add=True)
-    slug = models.SlugField(unique=True, null=True)
+    slug = models.SlugField(unique=False, null=True)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.trabajo.slug)

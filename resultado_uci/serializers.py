@@ -14,3 +14,22 @@ class ResultadoSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Resultado
         fields = ['trabajo', 'resultado_obtenido', 'evento', 'fecha', 'slug']
+
+
+class GetResultadoSerializer(serializers.ModelSerializer):
+    trabajo = serializers.PrimaryKeyRelatedField(queryset=Trabajo.objects.all())
+    resultado_obtenido = serializers.CharField(validators=[validate_result])
+    evento = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Resultado
+        fields = ['trabajo', 'resultado_obtenido', 'evento', 'fecha', 'slug']
+
+    def get_evento(self, obj):
+        # Retorna un diccionario con varios campos del modelo relacionado
+        return {
+            'id': obj.evento.id,
+            'name': obj.evento.nombre,
+            'description': obj.evento.descripcion,
+            'slug': obj.evento.slug,
+        }

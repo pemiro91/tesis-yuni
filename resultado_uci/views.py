@@ -9,7 +9,7 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from resultado_uci.models import Resultado
-from resultado_uci.serializers import ResultadoSerializer
+from resultado_uci.serializers import ResultadoSerializer, GetResultadoSerializer
 from users_uci.custom_permission import IsLoggedInAdminProfessor, IsLoggedInStudent
 
 
@@ -73,7 +73,7 @@ def getListResultadoForEvent(request, slug_event):
 def getListResultsForStudent(request):
     try:
         result = Resultado.objects.filter(trabajo__usuario_id=request.user.id)
-        serializer = ResultadoSerializer(result, many=True)
+        serializer = GetResultadoSerializer(result, many=True)
         return Response({'resultados': serializer.data})
     except ObjectDoesNotExist:
         raise Http404
