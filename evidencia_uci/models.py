@@ -16,7 +16,7 @@ class Evidencia(models.Model):
     imagen = models.ImageField(upload_to='evidence/', null=True, blank=True, validators=[validate_image_extension])
     evento = models.ForeignKey(Evento, on_delete=models.CASCADE, name='evento')
     fecha = models.DateTimeField(null=False, blank=False, auto_now_add=True)
-    slug = models.SlugField(unique=True, null=True)
+    slug = models.SlugField(unique=False, null=True)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.usuario.username)

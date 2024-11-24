@@ -14,3 +14,33 @@ class EvidenciaSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Evidencia
         fields = ['usuario', 'evento', 'imagen', 'fecha', 'slug']
+
+
+class GetEvidenciaSerializer(serializers.HyperlinkedModelSerializer):
+    usuario = serializers.SerializerMethodField()
+    evento = serializers.SerializerMethodField()
+    imagen = serializers.ImageField(required=True, validators=[validate_image_extension])
+
+    class Meta:
+        model = Evidencia
+        fields = ['usuario', 'evento', 'imagen', 'fecha', 'slug']
+
+    def get_evento(self, obj):
+        # Retorna un diccionario con varios campos del modelo relacionado
+        return {
+            'id': obj.evento.id,
+            'name': obj.evento.nombre,
+            'description': obj.evento.descripcion,
+            'contacto': obj.evento.contacto,
+            'ubicacion': obj.evento.ubicacion,
+            'slug': obj.evento.slug,
+        }
+
+    def get_usuario(self, obj):
+        # Retorna un diccionario con varios campos del modelo relacionado
+        return {
+            'id': obj.usuario.id,
+            'username': obj.usuario.username,
+            'first_name': obj.usuario.first_name,
+            'last_name': obj.usuario.last_name,
+        }

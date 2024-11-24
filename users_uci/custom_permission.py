@@ -48,9 +48,10 @@ class IsLoggedInAdminProfessor(BasePermission):
 
 class IsLoggedInAll(BasePermission):
     message = "Acceso denegado"
+    edit_methods = ("GET", "POST", "PUT", "DELETE")
 
     def has_permission(self, request, view):
-        return bool(request.user.is_authenticated)
+        return bool(request.user.is_authenticated and request.method in self.edit_methods)
 
 
 class IsLoggedInStudent(BasePermission):

@@ -8,14 +8,15 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from evidencia_uci.models import Evidencia
-from evidencia_uci.serializers import EvidenciaSerializer
+from evidencia_uci.serializers import EvidenciaSerializer, GetEvidenciaSerializer
+from users_uci.custom_permission import IsLoggedInStudent, IsLoggedInAll
 
 
 # Create your views here.
 
 class EvidenciaList(APIView):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsLoggedInStudent]
 
     @staticmethod
     def get(request):
@@ -30,7 +31,7 @@ class EvidenciaList(APIView):
             evidence = Evidencia.objects.filter(usuario_id=request.data['usuario'], evento=request.data['evento'])
             if evidence.exists():
                 return Response({'message': 'El usuario ya tiene una evidencia registrada en el evento'},
-                                status=HTTP_403_FORBIDDEN)
+                                status=HTTP_400_BAD_REQUEST)
             else:
                 serializer.save()
                 return Response(serializer.data, status=HTTP_201_CREATED)
@@ -63,7 +64,18 @@ class EvidenciaList(APIView):
 def getEvidenciaDetail(request, slug_name):
     try:
         evidencia = Evidencia.objects.get(slug=slug_name)
-        serializer = EvidenciaSerializer(evidencia, many=False)
+        serializer = GetEvidenciaSerializer(evidencia, many=False)
+        return Response(serializer.data)
+    except ObjectDoesNotExist:
+        raise Http404
+
+
+@api_view(['GET'])
+@permission_classes([IsLoggedInAll])
+def getListEvidenciaForUser(request):
+    try:
+        evidencias = Evidencia.objects.filter(usuario_id=request.user.id)
+        serializer = GetEvidenciaSerializer(evidencias, many=True)
         return Response(serializer.data)
     except ObjectDoesNotExist:
         raise Http404
