@@ -17,7 +17,7 @@ class ResultadoSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class GetResultadoSerializer(serializers.ModelSerializer):
-    trabajo = serializers.PrimaryKeyRelatedField(queryset=Trabajo.objects.all())
+    trabajo = serializers.SerializerMethodField()
     resultado_obtenido = serializers.CharField(validators=[validate_result])
     evento = serializers.SerializerMethodField()
 
@@ -32,4 +32,11 @@ class GetResultadoSerializer(serializers.ModelSerializer):
             'name': obj.evento.nombre,
             'description': obj.evento.descripcion,
             'slug': obj.evento.slug,
+        }
+
+    def get_trabajo(self, obj):
+        # Retorna un diccionario con varios campos del modelo relacionado
+        return {
+            'id': obj.trabajo.id,
+            'enlace': obj.trabajo.documento,
         }
