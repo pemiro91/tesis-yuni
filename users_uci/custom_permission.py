@@ -54,7 +54,7 @@ class IsLoggedInAll(BasePermission):
 
 
 class IsLoggedInStudent(BasePermission):
-    edit_methods = "POST"
+    edit_methods = ("GET", "POST", "PUT")
 
     def has_permission(self, request, view):
         if request.user.is_anonymous:

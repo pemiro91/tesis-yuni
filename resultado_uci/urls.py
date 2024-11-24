@@ -1,6 +1,6 @@
 from django.urls import path
 
-from resultado_uci.views import ResultadoList, getListResultadoForEvent
+from resultado_uci.views import ResultadoList, getListResultadoForEvent, getListResultsForStudent
 
 urlpatterns = [
 
@@ -9,5 +9,6 @@ urlpatterns = [
     path('api/update/<slug:slug_name>', ResultadoList.as_view(), name='update_resultado'),
     path('api/delete/<slug:slug_name>', ResultadoList.as_view(), name='delete_resultado'),
     path('api/event/<slug:slug_event>', getListResultadoForEvent, name='list_for_event_resultado'),
+    path('api/student', getListResultsForStudent, name='list_for_student_resultado'),
 
 ]
