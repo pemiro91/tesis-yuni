@@ -38,5 +38,6 @@ class GetResultadoSerializer(serializers.ModelSerializer):
         # Retorna un diccionario con varios campos del modelo relacionado
         return {
             'id': obj.trabajo.id,
-            'enlace': obj.trabajo.documento,
+            'enlace': str(obj.trabajo.documento),
+
         }
