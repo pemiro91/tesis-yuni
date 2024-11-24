@@ -72,7 +72,7 @@ def getEvidenciaDetail(request, slug_name):
 
 @api_view(['GET'])
 @permission_classes([IsLoggedInAll])
-def getListEvidenciaForUser(request):
+def getEvidenciasForUser(request):
     try:
         evidencias = Evidencia.objects.filter(usuario_id=request.user.id)
         serializer = GetEvidenciaSerializer(evidencias, many=True)

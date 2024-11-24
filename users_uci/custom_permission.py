@@ -51,7 +51,7 @@ class IsLoggedInAll(BasePermission):
     edit_methods = ("GET", "POST", "PUT", "DELETE")
 
     def has_permission(self, request, view):
-        return bool(request.user.is_authenticated and request.method in self.edit_methods)
+        return bool(request.user.is_authenticated)
 
 
 class IsLoggedInStudent(BasePermission):
