@@ -30,7 +30,7 @@ class ParticiparEvento(models.Model):
     usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, name='usuario')
     evento = models.ForeignKey(Evento, on_delete=models.CASCADE, name='evento')
     fecha = models.DateTimeField(null=False, blank=False, auto_now_add=True)
-    slug = models.SlugField(unique=True, null=True)
+    slug = models.SlugField(unique=False, null=True)
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.evento.slug)

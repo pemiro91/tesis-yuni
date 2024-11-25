@@ -20,7 +20,7 @@ from django.urls import path
 from django.urls.conf import include
 
 from event_uci.views import EventoList, getEventDetail, getEventForName, ParticiparEventoList, getUsersForEvent, \
-    getEventsForNext, getEventsForMonth
+    getEventsForNext, getEventsForMonth, getEventsForStudent
 from eventos import settings
 
 urlpatterns = [
@@ -44,5 +44,6 @@ urlpatterns = [
 
                   path('participar/api/register', ParticiparEventoList.as_view(), name='participar_event'),
                   path('participar/api/list/<slug:slug_name>', getUsersForEvent, name='participar_event_list'),
+                  path('participar/api/list-events-user', getEventsForStudent, name='participar_event_list'),
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

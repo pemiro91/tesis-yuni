@@ -13,7 +13,7 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from event_uci.models import Evento, ParticiparEvento
-from event_uci.serializers import EventoSerializer, ParticiparEventoSerializer
+from event_uci.serializers import EventoSerializer, ParticiparEventoSerializer, GetParticiparEventoSerializer
 from users_uci.custom_permission import IsLoggedInAdmin, IsLoggedInAll, IsLoggedInStudent, IsLoggedInAdminProfessor
 
 
@@ -131,5 +131,16 @@ def getEventsForMonth(request):
         events = Evento.objects.filter(fecha_inicio__year=year_now, fecha_inicio__month=month_now)
         serializer = EventoSerializer(events, many=True)
         return Response({'events_month': serializer.data})
+    except ObjectDoesNotExist:
+        raise Http404
+
+
+@api_view(['GET'])
+@permission_classes([IsLoggedInStudent])
+def getEventsForStudent(request):
+    try:
+        events = ParticiparEvento.objects.filter(usuario_id=request.user.id)
+        serializer = GetParticiparEventoSerializer(events, many=True)
+        return Response(serializer.data)
     except ObjectDoesNotExist:
         raise Http404

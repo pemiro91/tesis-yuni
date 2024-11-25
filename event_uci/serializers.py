@@ -22,3 +22,31 @@ class ParticiparEventoSerializer(serializers.ModelSerializer):
         self.fields['evento'] = EventoSerializer(read_only=True)
         return super(ParticiparEventoSerializer, self).to_representation(instance)
 
+
+class GetParticiparEventoSerializer(serializers.ModelSerializer):
+    usuario = serializers.SerializerMethodField()
+    evento = serializers.SerializerMethodField()
+
+    class Meta:
+        model = ParticiparEvento
+        fields = ['id', 'usuario', 'evento', 'fecha', 'slug']
+
+    def get_evento(self, obj):
+        # Retorna un diccionario con varios campos del modelo relacionado
+        return {
+            'id': obj.evento.id,
+            'name': obj.evento.nombre,
+            'description': obj.evento.descripcion,
+            'contacto': obj.evento.contacto,
+            'ubicacion': obj.evento.ubicacion,
+            'slug': obj.evento.slug,
+        }
+
+    def get_usuario(self, obj):
+        # Retorna un diccionario con varios campos del modelo relacionado
+        return {
+            'id': obj.usuario.id,
+            'username': obj.usuario.username,
+            'first_name': obj.usuario.first_name,
+            'last_name': obj.usuario.last_name,
+        }
